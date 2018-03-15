@@ -228,8 +228,8 @@ def save_mesh_geometry(fname,surf_dict):
             write_ply(fname,surf_dict['coords'],surf_dict['faces'])
         elif fname.endswith('obj'):
             save_obj(fname,surf_dict['coords'],surf_dict['faces'])
-            print('to view mesh in brainview, run the command:\n')
-            print('average_objects ' + fname + ' ' + fname)
+            #print('to view mesh in brainview, run the command:\n')
+            #print('average_objects ' + fname + ' ' + fname)
     else:
         raise ValueError('fname must be a filename and surf_dict must be a dictionary')
 
