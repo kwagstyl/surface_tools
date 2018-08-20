@@ -8,6 +8,7 @@ import os
 def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial",hemi="lh"):
     """calculate and smooth surface area using CIVET or freesurfer"""
     tmpdir='/tmp/' + str(np.random.randint(1000))
+    os.mkdir(tmpdir)
     if software == "CIVET" :
         try:
             subprocess.call("depth_potential -area_voronoi " + surfname + " " +os.path.join(tmpdir,"tmp_area.txt"),shell=True)
