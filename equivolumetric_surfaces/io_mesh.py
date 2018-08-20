@@ -122,11 +122,11 @@ def read_vtk(file):
         vertex_array=np.array(vertex_df)
     # sometimes the vtk format is weird with 9 indices per line, then it has to be reshaped
     elif np.array(vertex_df).shape[1]==9:
-        vertex_df=pd.read_csv(file, skiprows=range(start_vertices), nrows=int(number_vertices/3)+1, sep='\s*', header=None, engine='python')
+        vertex_df=pd.read_csv(file, skiprows=range(start_vertices), nrows=int(number_vertices//3)+1, sep='\s*', header=None, engine='python')
         vertex_array=np.array(vertex_df.iloc[0:1,0:3])
         vertex_array=np.append(vertex_array, vertex_df.iloc[0:1,3:6], axis=0)
         vertex_array=np.append(vertex_array, vertex_df.iloc[0:1,6:9], axis=0)
-        for row in range(1,(int(number_vertices/3)+1)):
+        for row in range(1,(int(number_vertices//3)+1)):
             for col in [0,3,6]:
                 vertex_array=np.append(vertex_array, np.array(vertex_df.iloc[row:(row+1),col:(col+3)]),axis=0)
         # strip rows containing nans
@@ -275,10 +275,10 @@ def save_obj(surf_mesh,coords,faces):
         s.write('\n')
         nt=len(Tri)*3
         Triangles=np.arange(3,nt+1,3)
-        Rounded8=np.shape(Triangles)[0]/8
+        Rounded8=np.shape(Triangles)[0]//8
         N8=8*Rounded8
         Triangles8=Triangles[0:N8]
-        RowsOf8=np.split(Triangles8,N8/8)
+        RowsOf8=np.split(Triangles8,N8//8)
         for r in RowsOf8:
             L=r.tolist()
             Lint=list(map(int,L))
@@ -290,11 +290,11 @@ def save_obj(surf_mesh,coords,faces):
         s.write('%s\n' % Line)
         s.write('\n')
         ListOfTriangles=np.array(Tri).flatten()
-        Rounded8=np.shape(ListOfTriangles)[0]/8
+        Rounded8=np.shape(ListOfTriangles)[0]//8
         N8=8*Rounded8
         Triangles8=ListOfTriangles[0:N8]
         ListTri8=ListOfTriangles[0:N8]
-        RowsOf8=np.split(Triangles8,N8/8)
+        RowsOf8=np.split(Triangles8,N8//8)
         for r in RowsOf8:
             L=r.tolist()
             Lint=list(map(int,L))

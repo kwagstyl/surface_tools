@@ -4,7 +4,7 @@ import subprocess
 import argparse
 import os
 
-def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial"):
+def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial",hemi="lh"):
     """calculate and smooth surface area using CIVET or freesurfer"""
     if software == "CIVET" :
         try:
@@ -17,6 +17,10 @@ def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial"):
             return 0;
     if software == "freesurfer":
         subjects_dir=os.environ['SUBJECTS_DIR']
+        if 'lh' in surfname:
+            hemi="lh"
+        else:
+            hemi="rh"
         if subject=="fsid":
             print("subject id not included")
             return 0;
@@ -37,6 +41,7 @@ parser.add_argument('n_surfs', type=int, help='number of output surfaces, also r
 parser.add_argument('output', type=str, help='output surface prefix eg equi_left_{N}')
 parser.add_argument('--smoothing',type=int, help='fwhm of surface area smoothing. optional, default = 2mm')
 parser.add_argument('--software', type=str, help='surface software package CIVET or freesurfer, default is CIVET')
+parser.add_argument('--subject_id', type=str, help='subject name if freesurfer')
 args=parser.parse_args()
 
 
@@ -49,14 +54,19 @@ if args.software:
 else:
     software="CIVET"
 
+if args.subject_id:
+    subject_id=args.subject_id
+else:
+    subject_id="fsid"
+
 wm = io.load_mesh_geometry(args.white)
 gm = io.load_mesh_geometry(args.gray)
 
 n_surfs=args.n_surfs
 
 
-wm_vertexareas = calculate_area(args.white, fwhm,software,surf="white")
-pia_vertexareas = calculate_area(args.gray, fwhm,software,surf="pial")
+wm_vertexareas = calculate_area(args.white, fwhm,software,surf="white", subject=subject_id)
+pia_vertexareas = calculate_area(args.gray, fwhm,software,surf="pial", subject=subject_id)
 
 
 def beta(alpha, aw, ap):
@@ -83,4 +93,8 @@ for depth in range(n_surfs):
     print "creating surface " + str(depth +1)
     betas = beta(float(depth)/(n_surfs-1), wm_vertexareas, pia_vertexareas)
     tmpsurf['coords'] = gm['coords'] + vectors* np.array([betas]).T
-    io.save_mesh_geometry(args.output+'{}.obj'.format(str(float(depth)/(n_surfs-1))),tmpsurf)
+    if software == "CIVET":
+        io.save_mesh_geometry(args.output+'{}.obj'.format(str(float(depth)/(n_surfs-1))),tmpsurf)
+    elif software == "freesurfer":
+        subjects_dir=os.environ['SUBJECTS_DIR']
+        io.save_mesh_geometry(os.path.join(subjects_dir,subject_id,'surf',args.output+'{}.pial'.format(str(float(depth)/(n_surfs-1)))),tmpsurf)
