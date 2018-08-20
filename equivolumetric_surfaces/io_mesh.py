@@ -51,7 +51,7 @@ def load_mesh_data(surf_data, gii_darray=0):
             if n_vectors == 1:
                 data = fulldata.darrays[gii_darray].data
             else:
-                print "Multiple data files found, output will be matrix"
+                print("Multiple data files found, output will be matrix")
                 data = np.zeros([len(fulldata.darrays[gii_darray].data), n_vectors])
                 for gii_darray in range(n_vectors):
                     data[:,gii_darray] = fulldata.darrays[gii_darray].data
@@ -124,7 +124,7 @@ def read_vtk(file):
         # strip rows containing nans
         vertex_array=vertex_array[ ~np.isnan(vertex_array) ].reshape(number_vertices,3)
     else:
-        print "vertex indices out of shape"
+        print("vertex indices out of shape")
     # read faces into df and array
     start_faces= (vtk_df[vtk_df[0].str.contains('POLYGONS')].index.tolist()[0])+1
     face_df=pd.read_csv(file, skiprows=range(start_faces), nrows=number_faces, sep='\s*', header=None, engine='python')
@@ -171,7 +171,7 @@ def read_ply(file):
 def read_obj(file):
     def chunks(l,n):
       """Yield n-sized chunks from l"""
-      for i in xrange(0, len(l), n):
+      for i in range(0, len(l), n):
           yield l[i:i+n]
     def indices(lst,element):
         result=[]
@@ -195,13 +195,13 @@ def read_obj(file):
              n_vert=int(line.split()[6])
              XYZ=np.zeros([n_vert,3])
          elif i<=n_vert:
-             XYZ[i-1]=map(float,line.split())
+             XYZ[i-1]=list(map(float,line.split()))
          elif i>2*n_vert+5:
              if not line.strip():
                  k=1
              elif k==1:
                  Polys.extend(line.split())
-    Polys=map(int,Polys)
+    Polys=list(map(int,Polys))
     npPolys=np.array(Polys)
     triangles=np.array(list(chunks(Polys,3)))
     return XYZ, triangles;
@@ -255,7 +255,7 @@ def save_obj(surf_mesh,coords,faces):
         k=-1
         for a in XYZ:
             k+=1
-            cor=' ' + ' '.join(map(str, XYZ[k]))
+            cor=' ' + ' '.join(list(map(str, XYZ[k])))
             s.write('%s\n' % cor)
         s.write('\n')
         for a in XYZ:
@@ -273,12 +273,12 @@ def save_obj(surf_mesh,coords,faces):
         RowsOf8=np.split(Triangles8,N8/8)
         for r in RowsOf8:
             L=r.tolist()
-            Lint=map(int,L)
-            Line=' ' + ' '.join(map(str, Lint))
+            Lint=list(map(int,L))
+            Line=' ' + ' '.join(list(map(str, Lint)))
             s.write('%s\n' % Line)
         L=Triangles[N8:].tolist()
-        Lint=map(int,L)
-        Line=' ' + ' '.join(map(str, Lint))
+        Lint=list(map(int,L))
+        Line=' ' + ' '.join(list(map(str, Lint)))
         s.write('%s\n' % Line)
         s.write('\n')
         ListOfTriangles=np.array(Tri).flatten()
@@ -289,12 +289,12 @@ def save_obj(surf_mesh,coords,faces):
         RowsOf8=np.split(Triangles8,N8/8)
         for r in RowsOf8:
             L=r.tolist()
-            Lint=map(int,L)
-            Line=' ' + ' '.join(map(str, Lint))
+            Lint=list(map(int,L))
+            Line=' ' + ' '.join(list(map(str, Lint)))
             s.write('%s\n' % Line)
         L=ListOfTriangles[N8:].tolist()
-        Lint=map(int,L)
-        Line=' ' + ' '.join(map(str, Lint))
+        Lint=list(map(int,L))
+        Line=' ' + ' '.join(list(map(str, Lint)))
         s.write('%s\n' % Line)
 
 
@@ -364,7 +364,7 @@ def write_vtk(filename, vertices, faces, data=None, comment=None):
 
 def write_ply(filename, vertices, faces, comment=None):
     import pandas as pd
-    print "writing ply format"
+    print("writing ply format")
     # infer number of vertices and faces
     number_vertices = vertices.shape[0]
     number_faces = faces.shape[0]
