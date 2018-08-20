@@ -17,6 +17,10 @@ def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial",h
             return 0;
     if software == "freesurfer":
         subjects_dir=os.environ['SUBJECTS_DIR']
+        if surf = "white":
+            areafile=".area"
+        elif surf = "pial"
+            areafile=".area.pial"
         if 'lh' in surfname:
             hemi="lh"
         else:
@@ -26,7 +30,7 @@ def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial",h
             return 0;
         try:
             subprocess.call("mris_fwhm --s " + subject + " --hemi " + hemi + " --cortex --smooth-only --fwhm " + str(fwhm) + " --i "
-                            + os.path.join(subjects_dir,subject,"surf", hemi+".area." + surf) + " --o /tmp/sm_area.mgh", shell=True)
+                            + os.path.join(subjects_dir,subject,"surf", hemi+areafile) + " --o /tmp/sm_area.mgh", shell=True)
             area=io.load_mgh("/tmp/sm_area.mgh")
         except OSError:
             print("freesurfer tool failure, check mris_fwhm works and SUBJECTS_DIR is set")
