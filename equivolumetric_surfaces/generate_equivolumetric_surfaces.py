@@ -2,17 +2,31 @@ import numpy as np
 import io_mesh as io
 import subprocess
 import argparse
+import os
 
-def calculate_area(surfname,fwhm):
-    """calculate surface area using minctools"""
-    try:
-        subprocess.call("depth_potential -area_voronoi " + surfname + " /tmp/tmp_area.txt",shell=True)
-        subprocess.call("depth_potential -smooth " + str(fwhm) + " /tmp/tmp_area.txt " + surfname + " /tmp/sm_area.txt",shell=True)
-        area=np.loadtxt("/tmp/sm_area.txt")
-        subprocess.call("rm /tmp/sm_area.txt /tmp/tmp_area.txt",shell=True)
-    except OSError:
-        print("depth_potential not found, please install CIVET tools or replace with alternative area calculation/data smoothing")
-        return 0;
+def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial"):
+    """calculate and smooth surface area using CIVET or freesurfer"""
+    if software == "CIVET" :
+        try:
+            subprocess.call("depth_potential -area_voronoi " + surfname + " /tmp/tmp_area.txt",shell=True)
+            subprocess.call("depth_potential -smooth " + str(fwhm) + " /tmp/tmp_area.txt " + surfname + " /tmp/sm_area.txt",shell=True)
+            area=np.loadtxt("/tmp/sm_area.txt")
+            subprocess.call("rm /tmp/sm_area.txt /tmp/tmp_area.txt",shell=True)
+        except OSError:
+            print("depth_potential not found, please install CIVET tools or replace with alternative area calculation/data smoothing")
+            return 0;
+    if software == "freesurfer":
+        subjects_dir=os.environ['SUBJECTS_DIR']
+        if subject=="fsid":
+            print("subject id not included")
+            return 0;
+        try:
+            subprocess.call("mris_fwhm --s " + subject + " --hemi " + hemi + " --cortex --smooth-only --fwhm " + str(fwhm) + " --i "
+                            + os.path.join(subjects_dir,subject,"surf", hemi+".area." + surf) + " --o /tmp/sm_area.mgh", shell=True)
+            area=io.load_mgh("/tmp/sm_area.mgh")
+        except OSError:
+            print("freesurfer tool failure, check mris_fwhm works and SUBJECTS_DIR is set")
+            return 0;
     return area;
    
 
@@ -22,12 +36,18 @@ parser.add_argument('white', type=str, help='input white surface')
 parser.add_argument('n_surfs', type=int, help='number of output surfaces, also returns gray and white surfaces at 0 and 1')
 parser.add_argument('output', type=str, help='output surface prefix eg equi_left_{N}')
 parser.add_argument('--smoothing',type=int, help='fwhm of surface area smoothing. optional, default = 2mm')
+parser.add_argument('--software', type=str, help='surface software package CIVET or freesurfer, default is CIVET')
 args=parser.parse_args()
+
 
 if args.smoothing:
     fwhm = args.smoothing
 else:
     fwhm = 2
+if args.software:
+    software=args.software
+else:
+    software="CIVET"
 
 wm = io.load_mesh_geometry(args.white)
 gm = io.load_mesh_geometry(args.gray)
@@ -35,8 +55,8 @@ gm = io.load_mesh_geometry(args.gray)
 n_surfs=args.n_surfs
 
 
-wm_vertexareas = calculate_area(args.white, fwhm)
-pia_vertexareas = calculate_area(args.gray, fwhm)
+wm_vertexareas = calculate_area(args.white, fwhm,software,surf="white")
+pia_vertexareas = calculate_area(args.gray, fwhm,software,surf="pial")
 
 
 def beta(alpha, aw, ap):
