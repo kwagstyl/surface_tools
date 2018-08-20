@@ -1,18 +1,10 @@
 import nibabel as nb
 import numpy as np
 
-
-def load_mgh(filename):
-    """ import mgh file using nibabel. returns flattened data array"""
-    mgh_file=nb.load(filename)
-    mmap_data=mgh_file.get_data()
-    array_data=np.ndarray.flatten(mmap_data)
-    return array_data;
-
 # function to load mesh geometry
 def load_mesh_geometry(surf_mesh):
     # if input is a filename, try to load it with nibabel
-    if isinstance(surf_mesh, basestring):
+    if isinstance(surf_mesh, str):
         if (surf_mesh.endswith('orig') or surf_mesh.endswith('pial') or
                 surf_mesh.endswith('white') or surf_mesh.endswith('sphere') or
                 surf_mesh.endswith('inflated')):
@@ -41,7 +33,7 @@ def load_mesh_geometry(surf_mesh):
 # function to load mesh data
 def load_mesh_data(surf_data, gii_darray=0):
     # if the input is a filename, load it
-    if isinstance(surf_data, basestring):
+    if isinstance(surf_data, str):
         if (surf_data.endswith('nii') or surf_data.endswith('nii.gz') or
                 surf_data.endswith('mgz')):
             data = np.squeeze(nb.load(surf_data).get_data())
@@ -75,7 +67,7 @@ def load_mesh_data(surf_data, gii_darray=0):
 
 ## function to write mesh data
 def save_mesh_data(fname, surf_data):
-    if isinstance(fname, basestring) and isinstance(surf_data,np.ndarray):
+    if isinstance(fname, str) and isinstance(surf_data,np.ndarray):
         if (fname.endswith('curv') or fname.endswith('thickness') or
                 fname.endswith('sulc')):
             nb.freesurfer.io.write_morph_data(fname,surf_data)
@@ -122,11 +114,11 @@ def read_vtk(file):
         vertex_array=np.array(vertex_df)
     # sometimes the vtk format is weird with 9 indices per line, then it has to be reshaped
     elif np.array(vertex_df).shape[1]==9:
-        vertex_df=pd.read_csv(file, skiprows=range(start_vertices), nrows=int(number_vertices//3)+1, sep='\s*', header=None, engine='python')
+        vertex_df=pd.read_csv(file, skiprows=range(start_vertices), nrows=int(number_vertices/3)+1, sep='\s*', header=None, engine='python')
         vertex_array=np.array(vertex_df.iloc[0:1,0:3])
         vertex_array=np.append(vertex_array, vertex_df.iloc[0:1,3:6], axis=0)
         vertex_array=np.append(vertex_array, vertex_df.iloc[0:1,6:9], axis=0)
-        for row in range(1,(int(number_vertices//3)+1)):
+        for row in range(1,(int(number_vertices/3)+1)):
             for col in [0,3,6]:
                 vertex_array=np.append(vertex_array, np.array(vertex_df.iloc[row:(row+1),col:(col+3)]),axis=0)
         # strip rows containing nans
@@ -177,10 +169,10 @@ def read_ply(file):
 
 #function to read MNI obj mesh format
 def read_obj(file):
-    def chunks(l,n):
-      """Yield n-sized chunks from l"""
-      for i in range(0, len(l), n):
-          yield l[i:i+n]
+    def chunks(l, n):
+        """Yield successive n-sized chunks from l."""
+        for i in range(0, len(l), n):
+            yield l[i:i + n]
     def indices(lst,element):
         result=[]
         offset = -1
@@ -219,7 +211,7 @@ def read_obj(file):
 # function to save mesh geometry
 def save_mesh_geometry(fname,surf_dict):
     # if input is a filename, try to load it with nibabel
-    if isinstance(fname, basestring) and isinstance(surf_dict,dict):
+    if isinstance(fname, str) and isinstance(surf_dict,dict):
         if (fname.endswith('orig') or fname.endswith('pial') or
                 fname.endswith('white') or fname.endswith('sphere') or
                 fname.endswith('inflated')):
@@ -236,8 +228,8 @@ def save_mesh_geometry(fname,surf_dict):
             write_ply(fname,surf_dict['coords'],surf_dict['faces'])
         elif fname.endswith('obj'):
             save_obj(fname,surf_dict['coords'],surf_dict['faces'])
-            #print('to view mesh in brainview, run the command:\n')
-            #print('average_objects ' + fname + ' ' + fname)
+            print('to view mesh in brainview, run the command:\n')
+            print('average_objects ' + fname + ' ' + fname)
     else:
         raise ValueError('fname must be a filename and surf_dict must be a dictionary')
 
@@ -263,7 +255,7 @@ def save_obj(surf_mesh,coords,faces):
         k=-1
         for a in XYZ:
             k+=1
-            cor=' ' + ' '.join(list(map(str, XYZ[k])))
+            cor=' ' + ' '.join(map(str, XYZ[k]))
             s.write('%s\n' % cor)
         s.write('\n')
         for a in XYZ:
@@ -275,34 +267,34 @@ def save_obj(surf_mesh,coords,faces):
         s.write('\n')
         nt=len(Tri)*3
         Triangles=np.arange(3,nt+1,3)
-        Rounded8=np.shape(Triangles)[0]//8
-        N8=8*Rounded8
+        Rounded8=np.shape(Triangles)[0]/8
+        N8=int(8*Rounded8)
         Triangles8=Triangles[0:N8]
-        RowsOf8=np.split(Triangles8,N8//8)
+        RowsOf8=np.split(Triangles8,N8/8)
         for r in RowsOf8:
             L=r.tolist()
-            Lint=list(map(int,L))
-            Line=' ' + ' '.join(list(map(str, Lint)))
+            Lint=map(int,L)
+            Line=' ' + ' '.join(map(str, Lint))
             s.write('%s\n' % Line)
         L=Triangles[N8:].tolist()
-        Lint=list(map(int,L))
-        Line=' ' + ' '.join(list(map(str, Lint)))
+        Lint=map(int,L)
+        Line=' ' + ' '.join(map(str, Lint))
         s.write('%s\n' % Line)
         s.write('\n')
         ListOfTriangles=np.array(Tri).flatten()
-        Rounded8=np.shape(ListOfTriangles)[0]//8
-        N8=8*Rounded8
+        Rounded8=np.shape(ListOfTriangles)[0]/8
+        N8=int(8*Rounded8)
         Triangles8=ListOfTriangles[0:N8]
         ListTri8=ListOfTriangles[0:N8]
-        RowsOf8=np.split(Triangles8,N8//8)
+        RowsOf8=np.split(Triangles8,N8/8)
         for r in RowsOf8:
             L=r.tolist()
-            Lint=list(map(int,L))
-            Line=' ' + ' '.join(list(map(str, Lint)))
+            Lint=map(int,L)
+            Line=' ' + ' '.join(map(str, Lint))
             s.write('%s\n' % Line)
         L=ListOfTriangles[N8:].tolist()
-        Lint=list(map(int,L))
-        Line=' ' + ' '.join(list(map(str, Lint)))
+        Lint=map(int,L)
+        Line=' ' + ' '.join(map(str, Lint))
         s.write('%s\n' % Line)
 
 
@@ -404,4 +396,3 @@ def write_ply(filename, vertices, faces, comment=None):
     with open(filename, 'a') as f:
         faces_df.to_csv(f, header=False, index=False,
                         float_format='%.0f', sep=' ')
-

@@ -98,7 +98,7 @@ tmpsurf= gm.copy()
 
 #number of equally space intracortical surfaces (eg 3 is 0.25, 0.5 and 0.75)
 for depth in range(n_surfs):
-    print "creating surface " + str(depth +1)
+    print("creating surface " + str(depth +1))
     betas = beta(float(depth)/(n_surfs-1), wm_vertexareas, pia_vertexareas)
     tmpsurf['coords'] = gm['coords'] + vectors* np.array([betas]).T
     if software == "CIVET":
