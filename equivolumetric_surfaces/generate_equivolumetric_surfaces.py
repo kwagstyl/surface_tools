@@ -4,22 +4,24 @@ import subprocess
 import argparse
 import os
 
+
 def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial",hemi="lh"):
     """calculate and smooth surface area using CIVET or freesurfer"""
+    tmpdir='/tmp/' + str(np.random.randint(1000))
     if software == "CIVET" :
         try:
-            subprocess.call("depth_potential -area_voronoi " + surfname + " /tmp/tmp_area.txt",shell=True)
-            subprocess.call("depth_potential -smooth " + str(fwhm) + " /tmp/tmp_area.txt " + surfname + " /tmp/sm_area.txt",shell=True)
-            area=np.loadtxt("/tmp/sm_area.txt")
-            subprocess.call("rm /tmp/sm_area.txt /tmp/tmp_area.txt",shell=True)
+            subprocess.call("depth_potential -area_voronoi " + surfname + " " +os.path.join(tmpdir,"tmp_area.txt"),shell=True)
+            subprocess.call("depth_potential -smooth " + str(fwhm) + " " + os.path.join(tmpdir,"tmp_area.txt ") + surfname + " "+os.path.join(tmpdir,"sm_area.txt"),shell=True)
+            area=np.loadtxt(os.path.join(tmpdir,"sm_area.txt"))
+            subprocess.call("rm -r "+tmpdir,shell=True)
         except OSError:
             print("depth_potential not found, please install CIVET tools or replace with alternative area calculation/data smoothing")
             return 0;
     if software == "freesurfer":
         subjects_dir=os.environ['SUBJECTS_DIR']
-        if surf = "white":
+        if surf == "white":
             areafile=".area"
-        elif surf = "pial"
+        elif surf == "pial":
             areafile=".area.pial"
         if 'lh' in surfname:
             hemi="lh"
@@ -30,8 +32,9 @@ def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial",h
             return 0;
         try:
             subprocess.call("mris_fwhm --s " + subject + " --hemi " + hemi + " --cortex --smooth-only --fwhm " + str(fwhm) + " --i "
-                            + os.path.join(subjects_dir,subject,"surf", hemi+areafile) + " --o /tmp/sm_area.mgh", shell=True)
-            area=io.load_mgh("/tmp/sm_area.mgh")
+                            + os.path.join(subjects_dir,subject,"surf", hemi+areafile) + " --o " + os.path.join(tmpdir,"sm_area.mgh"), shell=True)
+            area=io.load_mgh(os.path.join(tmpdir,"sm_area.mgh"))
+            subprocess.call("rm -r " + tmpdir, shell =True)
         except OSError:
             print("freesurfer tool failure, check mris_fwhm works and SUBJECTS_DIR is set")
             return 0;
