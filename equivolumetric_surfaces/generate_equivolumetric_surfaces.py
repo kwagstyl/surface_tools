@@ -95,12 +95,13 @@ def beta(alpha, aw, ap):
 
 vectors= wm['coords'] - gm['coords']
 tmpsurf= gm.copy()
-
+#create mask where vertex coordinates match
+mask = vectors.sum(axis=1)!=0
 #number of equally space intracortical surfaces (eg 3 is 0.25, 0.5 and 0.75)
 for depth in range(n_surfs):
     print("creating surface " + str(depth +1))
-    betas = beta(float(depth)/(n_surfs-1), wm_vertexareas, pia_vertexareas)
-    tmpsurf['coords'] = gm['coords'] + vectors* np.array([betas]).T
+    betas = beta(float(depth)/(n_surfs-1), wm_vertexareas[mask], pia_vertexareas[mask])
+    tmpsurf['coords'][mask] = gm['coords'][mask] + vectors[mask]* np.array([betas]).T
     if software == "CIVET":
         io.save_mesh_geometry(args.output+'{}.obj'.format(str(float(depth)/(n_surfs-1))),tmpsurf)
     elif software == "freesurfer":
