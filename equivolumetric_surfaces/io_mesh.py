@@ -247,6 +247,7 @@ def write_gifti(surf_mesh, coords, faces):
 def save_obj(surf_mesh,coords,faces):
 #write out MNI - obj format
     n_vert=len(coords)
+    norms=normal_vectors(coords,faces).tolist()
     XYZ=coords.tolist()
     Tri=faces.tolist()
     with open(surf_mesh,'w') as s:
@@ -255,11 +256,12 @@ def save_obj(surf_mesh,coords,faces):
         k=-1
         for a in XYZ:
             k+=1
-            cor=' ' + ' '.join(map(str, XYZ[k]))
+            cor=' ' + ' '.join(list(map(str, XYZ[k])))
             s.write('%s\n' % cor)
         s.write('\n')
         for a in XYZ:
-            s.write(' 0 0 0\n')
+            normal=' ' + ' '.join(list(map(str, norms[k])))
+            s.write('%s\n' % normal)
         s.write('\n')
         l=' ' + str(len(Tri))+'\n'
         s.write(l)
@@ -396,3 +398,23 @@ def write_ply(filename, vertices, faces, comment=None):
     with open(filename, 'a') as f:
         faces_df.to_csv(f, header=False, index=False,
                         float_format='%.0f', sep=' ')
+
+
+def normalize_v3(arr):
+    ''' Normalize a numpy array of 3 component vectors shape=(n,3) '''
+    lens = numpy.sqrt( arr[:,0]**2 + arr[:,1]**2 + arr[:,2]**2 )
+    arr[:,0] /= lens
+    arr[:,1] /= lens
+    arr[:,2] /= lens                
+    return arr
+
+def normal_vectors(vertices,faces):
+    norm = numpy.zeros( vertices.shape, dtype=vertices.dtype )
+    tris = vertices[faces]
+    n = numpy.cross( tris[::,1 ] - tris[::,0]  , tris[::,2 ] - tris[::,0] )
+    n=normalize_v3(n)
+    norm[ faces[:,0] ] += n
+    norm[ faces[:,1] ] += n
+    norm[ faces[:,2] ] += n
+    return normalize_v3(norm)
+   
