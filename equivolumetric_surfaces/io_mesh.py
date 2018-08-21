@@ -228,8 +228,8 @@ def save_mesh_geometry(fname,surf_dict):
             write_ply(fname,surf_dict['coords'],surf_dict['faces'])
         elif fname.endswith('obj'):
             save_obj(fname,surf_dict['coords'],surf_dict['faces'])
-            print('to view mesh in brainview, run the command:\n')
-            print('average_objects ' + fname + ' ' + fname)
+#            print('to view mesh in brainview, run the command:\n')
+#            print('average_objects ' + fname + ' ' + fname)
     else:
         raise ValueError('fname must be a filename and surf_dict must be a dictionary')
 
@@ -259,7 +259,7 @@ def save_obj(surf_mesh,coords,faces):
             cor=' ' + ' '.join(list(map(str, XYZ[k])))
             s.write('%s\n' % cor)
         s.write('\n')
-        for a in XYZ:
+        for k,a in enumerate(XYZ):
             normal=' ' + ' '.join(list(map(str, norms[k])))
             s.write('%s\n' % normal)
         s.write('\n')
@@ -402,16 +402,16 @@ def write_ply(filename, vertices, faces, comment=None):
 
 def normalize_v3(arr):
     ''' Normalize a numpy array of 3 component vectors shape=(n,3) '''
-    lens = numpy.sqrt( arr[:,0]**2 + arr[:,1]**2 + arr[:,2]**2 )
+    lens = np.sqrt( arr[:,0]**2 + arr[:,1]**2 + arr[:,2]**2 )
     arr[:,0] /= lens
     arr[:,1] /= lens
     arr[:,2] /= lens                
     return arr
 
 def normal_vectors(vertices,faces):
-    norm = numpy.zeros( vertices.shape, dtype=vertices.dtype )
+    norm = np.zeros( vertices.shape, dtype=vertices.dtype )
     tris = vertices[faces]
-    n = numpy.cross( tris[::,1 ] - tris[::,0]  , tris[::,2 ] - tris[::,0] )
+    n = np.cross( tris[::,1 ] - tris[::,0]  , tris[::,2 ] - tris[::,0] )
     n=normalize_v3(n)
     norm[ faces[:,0] ] += n
     norm[ faces[:,1] ] += n
