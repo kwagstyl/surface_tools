@@ -3,7 +3,7 @@ import io_mesh as io
 import subprocess
 import argparse
 import os
-
+import copy
 
 def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial",hemi="lh"):
     """calculate and smooth surface area using CIVET or freesurfer"""
@@ -94,7 +94,7 @@ def beta(alpha, aw, ap):
         return 1-(1 / (ap - aw) * (-aw + np.sqrt((1-alpha)*ap**2 + alpha*aw**2)))
 
 vectors= wm['coords'] - gm['coords']
-tmpsurf= gm.copy()
+tmpsurf= copy.deepcopy(gm)
 #create mask where vertex coordinates match
 mask = vectors.sum(axis=1)!=0
 #number of equally space intracortical surfaces (eg 3 is 0.25, 0.5 and 0.75)
