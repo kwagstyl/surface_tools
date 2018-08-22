@@ -1,6 +1,13 @@
 import nibabel as nb
 import numpy as np
 
+def load_mgh(filename):
+    """ import mgh file using nibabel. returns flattened data array"""
+    mgh_file=nb.load(filename)
+    mmap_data=mgh_file.get_data()
+    array_data=np.ndarray.flatten(mmap_data)
+    return array_data;
+
 # function to load mesh geometry
 def load_mesh_geometry(surf_mesh):
     # if input is a filename, try to load it with nibabel
