@@ -12,8 +12,11 @@ def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial",h
     if software == "CIVET" :
         try:
             subprocess.call("depth_potential -area_voronoi " + surfname + " " +os.path.join(tmpdir,"tmp_area.txt"),shell=True)
-            subprocess.call("depth_potential -smooth " + str(fwhm) + " " + os.path.join(tmpdir,"tmp_area.txt ") + surfname + " "+os.path.join(tmpdir,"sm_area.txt"),shell=True)
-            area=np.loadtxt(os.path.join(tmpdir,"sm_area.txt"))
+            if fwhm ==0:
+                area=np.loadtxt(os.path.join(tmpdir,"tmp_area.txt"))
+            else:
+                subprocess.call("depth_potential -smooth " + str(fwhm) + " " + os.path.join(tmpdir,"tmp_area.txt ") + surfname + " "+os.path.join(tmpdir,"sm_area.txt"),shell=True)
+                area=np.loadtxt(os.path.join(tmpdir,"sm_area.txt"))
             subprocess.call("rm -r "+tmpdir,shell=True)
         except OSError:
             print("depth_potential not found, please install CIVET tools or replace with alternative area calculation/data smoothing")
