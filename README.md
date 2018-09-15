@@ -4,7 +4,9 @@ Welcome to Surface tools! a collection of tools for surface-based operations
 Equivolumetric surfaces: creates equivolumetric surfaces based on the ratio of areas of the mesh surfaces, without the trouble of dealing with volumetric operations.
 
 <img src="https://github.com/kwagstyl/surface_tools/blob/master/equivolumetric_surfaces/images/equi_euclid_surfaces.png" width="500">
-*image_caption*
+*Equivolumetric surfaces (red) at 0.25, 0.5 and 0.75 cortical depth. Euclidean surface (yellow) at mid depth. The euclidean surface samples different layers in gyri and sulci*
+
+<img src="https://github.com/kwagstyl/surface_tools/blob/master/equivolumetric_surfaces/images/intensityintensity_profiles_euclid_equi.pdf" width="500">
 
 Written by Konrad Wagstyl and Alexander Huth at a Brain Hack, a version is also available in Pycortex.
 Casey Paquola and Richard Bethlehem were involved in piloting these scripts on CIVET and FreeSurfer respectively.
