@@ -50,7 +50,7 @@ parser.add_argument('gray', type=str, help='input gray surface')
 parser.add_argument('white', type=str, help='input white surface')
 parser.add_argument('n_surfs', type=int, help='number of output surfaces, also returns gray and white surfaces at 0 and 1')
 parser.add_argument('output', type=str, help='output surface prefix eg equi_left_{N}')
-parser.add_argument('--smoothing',type=int, help='fwhm of surface area smoothing. optional, default = 2mm')
+parser.add_argument('--smoothing',type=int, help='fwhm of surface area smoothing. optional, default = 0mm')
 parser.add_argument('--software', type=str, help='surface software package CIVET or freesurfer, default is CIVET')
 parser.add_argument('--subject_id', type=str, help='subject name if freesurfer')
 args=parser.parse_args()
@@ -59,7 +59,7 @@ args=parser.parse_args()
 if args.smoothing:
     fwhm = args.smoothing
 else:
-    fwhm = 2
+    fwhm = 0
 if args.software:
     software=args.software
 else:
