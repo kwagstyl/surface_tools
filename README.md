@@ -38,3 +38,5 @@ If you notice any typos/bugs, or have any suggestions or improvements, we would 
 This code has so far been tested on:
 python 2.7 and 3.6, freesurfer v.6 and on linux (Ubuntu 16.04) and macOS (10.12.6)
 python 2.7, CIVET 2.1, Ubuntu 12.04
+
+Acknowledgements: The io_mesh code was copied and adapted from https://github.com/juhuntenburg/laminar_python, another great tool for doing equivolumetric laminar processing.
