@@ -3,7 +3,7 @@ Welcome to Surface tools! a collection of tools for surface-based operations
 
 Equivolumetric surfaces: creates equivolumetric surfaces based on the ratio of areas of the mesh surfaces, without the trouble of dealing with volumetric operations.
 
-<img src="https://github.com/kwagstyl/surface_tools/blob/master/equivolumetric_surfaces/images/equi_euclid_surfaces.png" width="100">
+<img src="https://github.com/kwagstyl/surface_tools/blob/master/equivolumetric_surfaces/images/equi_euclid_surfaces.png" width="500">
 
 Written by Konrad Wagstyl and Alexander Huth at a Brain Hack, a version is also available in Pycortex.
 Casey Paquola and Richard Bethlehem were involved in piloting these scripts on CIVET and FreeSurfer respectively.
