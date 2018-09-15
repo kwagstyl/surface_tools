@@ -20,15 +20,15 @@ Install nibabel:
 pip install nibabel
 
 The code requires either CIVET and FreeSurfer to be installed.
-CIVET usage:
-python surface_tools/equivolumetric_surfaces/generate_equivolumetric_surfaces.py --smoothing 0 gray_left.obj white_left.obj 5 equi_left
-Then you can use volume_object_evaluate to sample the intensities at the particular depth:
+CIVET usage:  
+python surface_tools/equivolumetric_surfaces/generate_equivolumetric_surfaces.py --smoothing 0 gray_left.obj white_left.obj 5 equi_left  
+Then you can use volume_object_evaluate to sample the intensities at the particular depth:  
 volume_object_evaluate volume.mnc equi_left0.5.obj equi_left_intensities0.5.txt
 
-FreeSurfer usage (we assume CIVET as default, so if using freesurfer, specify with the freesurfer flag):
+FreeSurfer usage (we assume CIVET as default, so if using freesurfer, specify with the freesurfer flag):  
 python surface_tools/equivolumetric_surfaces/generate_equivolumetric_surfaces.py --smoothing 0 <subj>/surf/lh.pial <subj>/surf/lh.white 5 <subj>/surf/lh.equi --software freesurfer --subject_id SUBJECT_ID
   
-Then you can use mri_vol2surf to sample the intensities at the particular depth:
+Then you can use mri_vol2surf to sample the intensities at the particular depth:  
 mri_vol2surf --src volume.nii --out lh.equi_intensity_0.5.mgh --hemi lh --surf <subj>/surf/lh.equi0.5.pial --out_type mgh
 
 
