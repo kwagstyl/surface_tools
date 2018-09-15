@@ -15,6 +15,7 @@ If you notice any typos/bugs, or have any suggestions or improvements, we would 
 Dependencies:
 
 -nibabel
+Install: pip install nibabel
 
 This code has so far been tested on:
 python 2.7 and 3.6, freesurfer v.6 and on linux (Ubuntu 16.04) and macOS (10.12.6)
