@@ -35,7 +35,8 @@ python surface_tools/equivolumetric_surfaces/generate_equivolumetric_surfaces.py
 ```
 
 Then you can use mri_vol2surf to sample the intensities at the particular depth:   
-```mri_vol2surf --src volume.nii --out lh.equi_intensity_0.5.mgh --hemi lh --surf <subj>/surf/lh.equi0.5.pial --out_type mgh
+```
+mri_vol2surf --src volume.nii --out lh.equi_intensity_0.5.mgh --hemi lh --surf <subj>/surf/lh.equi0.5.pial --out_type mgh
 ```
 
 
