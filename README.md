@@ -54,3 +54,5 @@ This code has so far been tested on:
 The io_mesh code was copied and adapted from https://github.com/juhuntenburg/laminar_python, another great tool for doing volume-based equivolumetric laminar processing.
 
 The equations for generating equivolumetric surfaces come from Waehnert et al 2014: "Anatomically motivated modeling of cortical laminae" https://doi.org/10.1016/j.neuroimage.2013.03.078
+
+Code is demo-ed here on the BigBrain, freely available histological atlas of the human brain https://bigbrain.loris.ca/
