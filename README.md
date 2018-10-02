@@ -17,7 +17,9 @@ To get started you can clone the github repository into your folder of choice:
 
 ```
 git clone https://github.com/kwagstyl/surface_tools
+```
 Install nibabel:
+```
 pip install nibabel
 ```
 
