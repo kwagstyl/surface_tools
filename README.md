@@ -51,4 +51,5 @@ This code has so far been tested on:
 - python 2.7, CIVET 2.1, Ubuntu 12.04   
 
 ### Acknowledgements:
-The io_mesh code was copied and adapted from https://github.com/juhuntenburg/laminar_python, another great tool for doing equivolumetric laminar processing.
+The io_mesh code was copied and adapted from https://github.com/juhuntenburg/laminar_python, another great tool for doing volume-based equivolumetric laminar processing.
+The equations for generating equivolumetric surfaces come from Waehnert et al 2014: "Anatomically motivated modeling of cortical laminae" https://doi.org/10.1016/j.neuroimage.2013.03.078
