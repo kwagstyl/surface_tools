@@ -55,4 +55,4 @@ The io_mesh code was copied and adapted from https://github.com/juhuntenburg/lam
 
 The equations for generating equivolumetric surfaces come from Waehnert et al 2014: "Anatomically motivated modeling of cortical laminae" https://doi.org/10.1016/j.neuroimage.2013.03.078
 
-Code is demo-ed here on the BigBrain, freely available histological atlas of the human brain https://bigbrain.loris.ca/
+Code is demo-ed here on the BigBrain (Amunts et al., 2013), freely available histological atlas of the human brain https://bigbrain.loris.ca/
