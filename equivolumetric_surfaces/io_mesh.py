@@ -15,7 +15,8 @@ def load_mesh_geometry(surf_mesh):
         if (surf_mesh.endswith('orig') or surf_mesh.endswith('pial') or
                 surf_mesh.endswith('white') or surf_mesh.endswith('sphere') or
                 surf_mesh.endswith('inflated')):
-            coords, faces = nb.freesurfer.io.read_geometry(surf_mesh)
+            coords, faces, volume_info  = nb.freesurfer.io.read_geometry(surf_mesh, read_metadata=True)
+            return {'coords':coords,'faces':faces,'volume_info': volume_info}
         elif surf_mesh.endswith('gii'):
             coords, faces = nb.gifti.read(surf_mesh).getArraysFromIntent(nb.nifti1.intent_codes['NIFTI_INTENT_POINTSET'])[0].data, \
                             nb.gifti.read(surf_mesh).getArraysFromIntent(nb.nifti1.intent_codes['NIFTI_INTENT_TRIANGLE'])[0].data
@@ -222,7 +223,10 @@ def save_mesh_geometry(fname,surf_dict):
         if (fname.endswith('orig') or fname.endswith('pial') or
                 fname.endswith('white') or fname.endswith('sphere') or
                 fname.endswith('inflated')):
-            nb.freesurfer.io.write_geometry(fname,surf_dict['coords'],surf_dict['faces'])
+            if 'volume_info' in surf_dict.keys():
+                nb.freesurfer.io.write_geometry(fname,surf_dict['coords'],surf_dict['faces'],volume_info=surf_dict['volume_info'])
+            else :
+                nb.freesurfer.io.write_geometry(fname,surf_dict['coords'],surf_dict['faces'])
 #            save_freesurfer(fname,surf_dict['coords'],surf_dict['faces'])
         elif fname.endswith('gii'):
             write_gifti(fname,surf_dict['coords'],surf_dict['faces'])
