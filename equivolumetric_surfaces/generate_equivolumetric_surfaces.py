@@ -37,10 +37,8 @@ def calculate_area(surfname,fwhm, software="CIVET", subject="fsid",surf="pial",h
             print("subject id not included")
             return 0;
         try:
-            subprocess.call("mris_fwhm --s " + subject + " --hemi " + hemi + " --smooth-only --fwhm " + str(fwhm) + " --i "
+            subprocess.call("mris_fwhm --s " + subject + " --hemi " + hemi + " --cortex --smooth-only --fwhm " + str(fwhm) + " --i "
                             + os.path.join(subjects_dir,subject,"surf", hemi+areafile) + " --o " + os.path.join(tmpdir,"sm_area.mgh"), shell=True)
-#            subprocess.call("mris_fwhm --s " + subject + " --hemi " + hemi + " --cortex --smooth-only --fwhm " + str(fwhm) + " --i "
- #                           + os.path.join(subjects_dir,subject,"surf", hemi+areafile) + " --o " + os.path.join(tmpdir,"sm_area.mgh"), shell=True)
             area=io.load_mgh(os.path.join(tmpdir,"sm_area.mgh"))
             subprocess.call("rm -r " + tmpdir, shell =True)
         except OSError:
