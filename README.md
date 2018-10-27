@@ -34,7 +34,7 @@ volume_object_evaluate volume.mnc equi_left0.5.obj equi_left_intensities0.5.txt
 ### FreeSurfer usage 
 (we assume CIVET as default, so if using freesurfer, specify with the freesurfer flag):     
 ```
-python surface_tools/equivolumetric_surfaces/generate_equivolumetric_surfaces.py --smoothing 0 <subj>/surf/lh.pial <subj>/surf/lh.white 5 <subj>/surf/lh.equi --software freesurfer --subject_id SUBJECT_ID
+python surface_tools/equivolumetric_surfaces/generate_equivolumetric_surfaces.py --smoothing 0 <subj>/surf/lh.pial <subj>/surf/lh.white 5 lh.equi --software freesurfer --subject_id SUBJECT_ID
 ```
 
 Then you can use mri_vol2surf to sample the intensities at the particular depth:   
