@@ -57,4 +57,4 @@ The equations for generating equivolumetric surfaces come from Waehnert et al 20
 
 Code is demo-ed here on the BigBrain (Amunts et al., 2013), freely available histological atlas of the human brain https://bigbrain.loris.ca/
 
-This work was partially supported by the Healthy Brains for Healthy Lives (HBHL) initiative.
+This work was partially supported by the Healthy Brains for Healthy Lives (HBHL) initiative and the Avrith MNI-Cambridge Neuroscience Collaboration.
