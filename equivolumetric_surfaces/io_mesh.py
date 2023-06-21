@@ -4,7 +4,7 @@ import numpy as np
 def load_mgh(filename):
     """ import mgh file using nibabel. returns flattened data array"""
     mgh_file=nb.load(filename)
-    mmap_data=mgh_file.get_data()
+    mmap_data=mgh_file.get_fdata()
     array_data=np.ndarray.flatten(mmap_data)
     return array_data;
 
@@ -44,7 +44,7 @@ def load_mesh_data(surf_data, gii_darray=0):
     if isinstance(surf_data, str):
         if (surf_data.endswith('nii') or surf_data.endswith('nii.gz') or
                 surf_data.endswith('mgz')):
-            data = np.squeeze(nb.load(surf_data).get_data())
+            data = np.squeeze(nb.load(surf_data).get_fdata())
         elif (surf_data.endswith('curv') or surf_data.endswith('sulc') or
                 surf_data.endswith('thickness')):
             data = nb.freesurfer.io.read_morph_data(surf_data)
