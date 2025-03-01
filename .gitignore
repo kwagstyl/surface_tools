@@ -1,0 +1,8 @@
+# Ignore egg files and directories
+*.egg
+*.egg-info/
+surface_tools/__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+build/*

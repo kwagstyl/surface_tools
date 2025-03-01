@@ -13,15 +13,15 @@ Euclidean vs equivolumetric intensity sampling. The laminar peaks are better ali
 Written by Konrad Wagstyl and Alexander Huth at a Brain Hack, a version is also available in Pycortex.
 Casey Paquola and Richard Bethlehem were involved in piloting these scripts on CIVET and FreeSurfer respectively.
 
-To get started you can clone the github repository into your folder of choice:
+```bash
+# install from git
+pip install git+https://github.com/gjheij/surface_tools
+```
 
-```
-git clone https://github.com/kwagstyl/surface_tools
-```
-Install nibabel:
-```
-pip install nibabel
-```
+This puts the `generate_equivolumetric_surfaces`-script in the `bin`-folder of the environment:
+
+```bash
+
 
 The code requires either CIVET and FreeSurfer to be installed.
 ### CIVET usage:    

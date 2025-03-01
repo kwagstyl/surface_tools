@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "surface_tools"
+version = "0.1.0"
+description = "Surface tools for equivolumetric surface generation"
+authors = [
+    { name = "Konrad Wagstyl and Alexander Huth", email = "kw350@cam.ac.uk" },
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+dependencies = ["numpy", "nibabel"]
+requires-python = ">=3.6"
+
+[project.scripts]
+generate_equivolumetric_surfaces = "surface_tools.equivolumetric_surfaces.generate_equivolumetric_surfaces:main"
+
+[tool.setuptools.packages.find]
+include = ["surface_tools*"]
+
+[tool.setuptools.package-data]
+"surface_tools.equivolumetric_surfaces.images" = ["*.png", "*.svg"]
