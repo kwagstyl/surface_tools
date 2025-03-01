@@ -21,24 +21,45 @@ pip install git+https://github.com/gjheij/surface_tools
 This puts the `generate_equivolumetric_surfaces`-script in the `bin`-folder of the environment:
 
 ```bash
+generate_equivolumetric_surfaces --help
+usage: generate_equivolumetric_surfaces [-h] [--smoothing SMOOTHING]
+                                        [--software {CIVET,freesurfer}] [--subject_id SUBJECT_ID]
+                                        gray white n_surfs output
 
+Generate equivolumetric surfaces between input surfaces
+
+positional arguments:
+  gray                  input gray surface
+  white                 input white surface
+  n_surfs               number of output surfaces, also returns gray and white surfaces at 0 and 1
+  output                output surface prefix e.g., equi_left_{N}
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --smoothing SMOOTHING
+                        fwhm of surface area smoothing (default=0mm)
+  --software {CIVET,freesurfer}
+                        surface software package
+  --subject_id SUBJECT_ID
+                        subject name if freesurfer
+```
 
 The code requires either CIVET and FreeSurfer to be installed.
 ### CIVET usage:    
-```
-python surface_tools/equivolumetric_surfaces/generate_equivolumetric_surfaces.py --smoothing 0 gray_left.obj white_left.obj 5 equi_left
+```bash
+generate_equivolumetric_surfaces --smoothing 0 gray_left.obj white_left.obj 5 equi_left
 ```  
 Then you can use volume_object_evaluate to sample the intensities at the particular depth:   
 volume_object_evaluate volume.mnc equi_left0.5.obj equi_left_intensities0.5.txt
 
 ### FreeSurfer usage 
 (we assume CIVET as default, so if using freesurfer, specify with the freesurfer flag):     
-```
-python surface_tools/equivolumetric_surfaces/generate_equivolumetric_surfaces.py --smoothing 0 <subj>/surf/lh.pial <subj>/surf/lh.white 5 lh.equi --software freesurfer --subject_id SUBJECT_ID
+```bash
+generate_equivolumetric_surfaces --smoothing 0 <subj>/surf/lh.pial <subj>/surf/lh.white 5 lh.equi --software freesurfer --subject_id SUBJECT_ID
 ```
 
 Then you can use mri_vol2surf to sample the intensities at the particular depth:   
-```
+```bash
 mri_vol2surf --src volume.nii --out lh.equi_intensity_0.5.mgh --hemi lh --surf <subj>/surf/lh.equi0.5.pial --out_type mgh
 ```
 
