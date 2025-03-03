@@ -15,7 +15,7 @@ Casey Paquola and Richard Bethlehem were involved in piloting these scripts on C
 
 ```bash
 # install from git
-pip install git+https://github.com/gjheij/surface_tools
+pip install git+https://github.com/kwagstyl/surface_tools
 ```
 
 This puts the `generate_equivolumetric_surfaces`-script in the `bin`-folder of the environment:
